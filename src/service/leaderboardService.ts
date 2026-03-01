@@ -32,7 +32,7 @@ export const submitScore = async (
 export const getDailyLeaderboard = async (
   playType: number,
   timestamp: number,
-  limit: number = 50
+  limit: number = 5
 ) => {
   const scores = await DailyScore.findAll({
     where: {
@@ -85,7 +85,7 @@ export const getScorePercentile = async (
     },
   });
 
-  const percentile = Math.round((belowCount / totalCount) * 100);
-
+const otherPlayers = totalCount - 1;
+  const percentile = otherPlayers > 0 ? Math.round((belowCount / otherPlayers) * 100) : 100;
   return { percentile, totalPlayers: totalCount };
 };

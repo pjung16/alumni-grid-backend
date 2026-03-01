@@ -6,14 +6,13 @@ import {
   getScorePercentile,
 } from "../service/leaderboardService";
 
-export const submitDailyScore = async (req: Request, res: Response) => {
+export const submitDailyScore = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId, score, playType, timestamp } = req.body;
 
     if (!userId || score === undefined || playType === undefined || !timestamp) {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Missing required fields" });
+      res.status(400).json({ status: 400, message: "Missing required fields" });
+      return;
     }
 
     const dailyScore = await submitScore(userId, score, playType, timestamp);
@@ -21,20 +20,17 @@ export const submitDailyScore = async (req: Request, res: Response) => {
     res.status(200).json({ status: 200, data: dailyScore });
   } catch (err) {
     console.error(`leaderboardController~submitDailyScore() => ${err}`);
-    res
-      .status(500)
-      .json({ status: 500, message: "Failed to submit score" });
+    res.status(500).json({ status: 500, message: "Failed to submit score" });
   }
 };
 
-export const getLeaderboard = async (req: Request, res: Response) => {
+export const getLeaderboard = async (req: Request, res: Response): Promise<void> => {
   try {
     const { playType, timestamp } = req.params;
 
     if (!playType || !timestamp) {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Missing playType or timestamp" });
+      res.status(400).json({ status: 400, message: "Missing playType or timestamp" });
+      return;
     }
 
     const leaderboard = await getDailyLeaderboard(
@@ -45,13 +41,11 @@ export const getLeaderboard = async (req: Request, res: Response) => {
     res.status(200).json({ status: 200, data: leaderboard });
   } catch (err) {
     console.error(`leaderboardController~getLeaderboard() => ${err}`);
-    res
-      .status(500)
-      .json({ status: 500, message: "Failed to get leaderboard" });
+    res.status(500).json({ status: 500, message: "Failed to get leaderboard" });
   }
 };
 
-export const getUserDailyScore = async (req: Request, res: Response) => {
+export const getUserDailyScore = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId, playType, timestamp } = req.params;
 
@@ -64,13 +58,11 @@ export const getUserDailyScore = async (req: Request, res: Response) => {
     res.status(200).json({ status: 200, data: score });
   } catch (err) {
     console.error(`leaderboardController~getUserDailyScore() => ${err}`);
-    res
-      .status(500)
-      .json({ status: 500, message: "Failed to get user score" });
+    res.status(500).json({ status: 500, message: "Failed to get user score" });
   }
 };
 
-export const getPercentile = async (req: Request, res: Response) => {
+export const getPercentile = async (req: Request, res: Response): Promise<void> => {
   try {
     const { score, playType, timestamp } = req.params;
 
@@ -83,8 +75,6 @@ export const getPercentile = async (req: Request, res: Response) => {
     res.status(200).json({ status: 200, data: result });
   } catch (err) {
     console.error(`leaderboardController~getPercentile() => ${err}`);
-    res
-      .status(500)
-      .json({ status: 500, message: "Failed to get percentile" });
+    res.status(500).json({ status: 500, message: "Failed to get percentile" });
   }
 };
