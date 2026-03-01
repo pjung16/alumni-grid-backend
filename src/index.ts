@@ -15,6 +15,7 @@ import dotenv from "dotenv";
 import { createNewGameEvent } from "./events/newGameEvent";
 import { PlayType } from "./config/constant";
 import { updateNBAWithImageLink } from "./script/nbaImageScript";
+import "./models/GameCompletion";
 dotenv.config();
 
 const app = express();

@@ -1,6 +1,7 @@
 ﻿import { Request, Response } from "express";
 import {
   submitScore,
+  submitGameCompletion,
   getDailyLeaderboard,
   getUserScore,
   getScorePercentile,
@@ -76,5 +77,19 @@ export const getPercentile = async (req: Request, res: Response): Promise<void> 
   } catch (err) {
     console.error(`leaderboardController~getPercentile() => ${err}`);
     res.status(500).json({ status: 500, message: "Failed to get percentile" });
+  }
+};
+export const submitCompletion = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { score, playType, timestamp } = req.body;
+    if (score === undefined || playType === undefined || !timestamp) {
+      res.status(400).json({ status: 400, message: "Missing required fields" });
+      return;
+    }
+    const completion = await submitGameCompletion(score, playType, timestamp);
+    res.status(200).json({ status: 200, data: completion });
+  } catch (err) {
+    console.error(`leaderboardController~submitCompletion() => ${err}`);
+    res.status(500).json({ status: 500, message: "Failed to submit completion" });
   }
 };
