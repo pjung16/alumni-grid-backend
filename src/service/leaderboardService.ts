@@ -42,7 +42,7 @@ export const getDailyLeaderboard = async (
     include: [
       {
         model: User,
-        attributes: ["id", "name", "picture"],
+        attributes: ["id", "name", "picture", "username"],
       },
     ],
     order: [["score", "DESC"]],

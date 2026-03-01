@@ -7,6 +7,7 @@ export interface UserAttributes {
   email: string;
   name: string;
   picture?: string;
+  username?: string;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
@@ -36,6 +37,11 @@ User.init(
     picture: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+username: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
     },
   },
   {
