@@ -86,6 +86,6 @@ export const getScorePercentile = async (
   });
 
 const otherPlayers = totalCount - 1;
-  const percentile = otherPlayers > 0 ? Math.round((belowCount / otherPlayers) * 100) : 100;
+  const percentile = otherPlayers > 0 ? Math.min(100, Math.round((belowCount / otherPlayers) * 100)) : 100;
   return { percentile, totalPlayers: totalCount };
 };
