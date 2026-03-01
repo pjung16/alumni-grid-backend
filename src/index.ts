@@ -19,7 +19,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: [LiveFrontendURL, LocalFrontendURL, WWWFrontendURL] }));
+app.use(cors({ origin: [LiveFrontendURL, LocalFrontendURL, WWWFrontendURL, "http://192.168.1.154:3000"] }));
 
 // app.use(cors());
 
