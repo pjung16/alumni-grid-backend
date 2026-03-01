@@ -1,4 +1,5 @@
 ﻿import DailyScore from "../models/DailyScore";
+import GameCompletion from "../models/GameCompletion";
 import User from "../models/User";
 import { Op } from "sequelize";
 
@@ -21,12 +22,22 @@ export const submitScore = async (
       timestamp,
     },
   });
-
   if (!created && score > dailyScore.getDataValue("score")) {
     await dailyScore.update({ score });
   }
-
   return dailyScore;
+};
+
+export const submitGameCompletion = async (
+  score: number,
+  playType: number,
+  timestamp: number
+) => {
+  return await GameCompletion.create({
+    score,
+    playType,
+    timestamp,
+  });
 };
 
 export const getDailyLeaderboard = async (
@@ -48,7 +59,6 @@ export const getDailyLeaderboard = async (
     order: [["score", "DESC"]],
     limit,
   });
-
   return scores;
 };
 
@@ -71,21 +81,18 @@ export const getScorePercentile = async (
   playType: number,
   timestamp: number
 ) => {
-  const totalCount = await DailyScore.count({
+  const totalCount = await GameCompletion.count({
     where: { playType, timestamp },
   });
-
   if (totalCount === 0) return { percentile: 100, totalPlayers: 0 };
-
-  const belowCount = await DailyScore.count({
+  const belowCount = await GameCompletion.count({
     where: {
       playType,
       timestamp,
       score: { [Op.lt]: score },
     },
   });
-
-const otherPlayers = totalCount - 1;
+  const otherPlayers = totalCount - 1;
   const percentile = otherPlayers > 0 ? Math.min(100, Math.round((belowCount / otherPlayers) * 100)) : 100;
   return { percentile, totalPlayers: totalCount };
 };
